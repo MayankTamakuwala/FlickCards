@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 	}
 
 	if (evt.type === "user.created") {
-		console.log("userId:", evt.data.id);
+		console.log("User Created userId:", evt.data.id);
 		try {
 			await setDoc(doc(db, `users/${evt.data.id}`), {
 				id: evt.data.id,
