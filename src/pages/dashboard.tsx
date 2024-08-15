@@ -7,7 +7,7 @@ import {v4 as uuid4} from 'uuid';
 import withAuth from "@/lib/withAuth";
 import toast, {Toaster} from 'react-hot-toast';
 import BookLoader from "@/components/BookLoader";
-import { useUserData } from "@/hooks/useUserData";
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface Flashcards{
     id: string;
@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [prompt, setPrompt] = useState("")
     const [flashcards, setFlashcards] = useState<Flashcards[]>([])
     const [loading, setLoading] = useState(false)
-    const { userData, loading: userLoading, error, addFlashcard } = useUserData();
+    const { userData, loading: userLoading, error, addFlashcard } = useSubscription();
 
     const placeholders = [
         "Generate flashcards on basic Python programming (Easy).",

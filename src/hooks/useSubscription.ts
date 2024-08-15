@@ -12,16 +12,18 @@ interface Flashcard {
 	}>;
 }
 
-interface UserData {
+export interface UserData {
 	id: string;
 	email: string;
-	created_at: string;
+	created_at: number;
 	paid: boolean | null;
 	last_paid: string | null;
 	flashcards: Flashcard[];
+	planName: string;
+	active_days: number;
 }
 
-export const useUserData = () => {
+export const useSubscription = () => {
 	const { userId } = useAuth();
 	const [userData, setUserData] = useState<UserData | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
@@ -39,7 +41,10 @@ export const useUserData = () => {
 			if (userDoc.exists()) {
 				const user = userDoc.data() as UserData;
 
-				const flashcardsCollectionRef = collection(db,`users/${userId}/flashcards`);
+				const flashcardsCollectionRef = collection(
+					db,
+					`users/${userId}/flashcards`
+				);
 				const flashcardsSnapshot = await getDocs(flashcardsCollectionRef);
 
 				const flashcards = flashcardsSnapshot.docs.map((doc) => ({
@@ -47,7 +52,7 @@ export const useUserData = () => {
 					...doc.data(),
 				})) as Flashcard[];
 
-				setUserData({...user,flashcards,});
+				setUserData({ ...user, flashcards });
 			} else {
 				console.log("No such document!");
 				setUserData(null);

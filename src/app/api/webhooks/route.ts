@@ -60,6 +60,7 @@ export async function POST(req: Request) {
 				paid: null,
 				last_paid: null,
 				active_days: 7,
+				planName: "Free Trial",
 			});
 			console.log("User data saved to Firebase successfully.");
 		} catch (error) {
