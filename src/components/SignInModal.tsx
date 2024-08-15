@@ -15,7 +15,7 @@ const SignInModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <p className="mb-4">You need to sign in to access this page.</p>
                 <button
                     onClick={onClose}
-                    className="bg-blue-500 text-white py-2 px-4 rounded"
+                    className='bg-black text-white dark:bg-white dark:text-black text-sm rounded-md border border-black py-2 px-4'
                 >
                     Close
                 </button>
