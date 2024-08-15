@@ -21,7 +21,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ front, back }) => {
                 <div className="card-front bg-white shadow-lg p-5">
                     {front}
                 </div>
-                <div className="card-back bg-gray-200 shadow-lg">
+                <div className="card-back bg-gray-200 shadow-lg p-5">
                     {back}
                 </div>
             </div>
