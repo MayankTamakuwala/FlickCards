@@ -35,12 +35,12 @@ export default async function handler(
 								8. Tailor the difficulty level of the flashcards to the user's specified preferences.
 								9. If given a body of text, extract the most important and relevant information for the flashcards
 								10. Aim to create a balanced set of flashcards that covers the topic comprehensively.
-								11. If the topic is not directly related to traditional academic subjects (such as science, history, mathematics, language, etc.), then return this exact JSON output with no extra text or explanation {"title": "Untitled", "cards": []}
+								11. If the topic is not directly related to traditional academic subjects (such as science, history, mathematics, language, etc.), then return this exact JSON output with no extra text or explanation {"title": "Untitled", "difficulty": "None" ,"cards": []}
 
 								Remember, the goal is to facilitate effective learning and retention of information through flashcards.
 
 								Return the output only in the following JSON format with no extra text or explanation
-								{"title": "<really cool and short title related to the topic>", "cards": [{"front": "<flashcard question>", "back": "<flashcard answer>"}]}
+								{"title": "<really cool and short title related to the topic>", "difficulty": "Easy" | "Medium" | "Hard", "cards": [{"front": "<flashcard question>", "back": "<flashcard answer>"}]}
 							`,
 						},
 						{
