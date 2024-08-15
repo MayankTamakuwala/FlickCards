@@ -1,4 +1,4 @@
-import { CloudLightningIcon, DotIcon } from "@/assets/Icons"
+import { DotIcon } from "@/assets/Icons"
 import Link from "next/link"
 import { useAuth } from "@clerk/nextjs"
 import {
@@ -9,10 +9,9 @@ import {
 const Header = () => {
     const { userId } = useAuth();
     return (
-        // <header className="px-4 lg:px-6 h-14 flex items-center border-b-2  top-0 z-50">
         <header className="fixed top-0 left-0 right-0 px-4 lg:px-6 h-14 flex items-center border-b-2 bg-white z-50">
             <Link href="/" className="flex items-center justify-center" prefetch={false}>
-                <CloudLightningIcon className="h-6 w-6" />
+                <img src="/logo.jpg" alt="FlickCards Logo" className="h-12 w-12" />
                 <span className="sr-only">AI Flashcards</span>
             </Link>
 
