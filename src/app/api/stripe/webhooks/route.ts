@@ -26,20 +26,31 @@ export async function POST(request: NextRequest) {
 		case "checkout.session.completed":
 			const checkoutSession = event.data.object;
 
-            if(checkoutSession.metadata && checkoutSession.metadata.userId){
-                const userDocRef = doc(db, "users", checkoutSession.metadata.userId);
-                await setDoc(
-                    userDocRef,
-                    {
-                        planName: "Pro",
-                        last_paid: new Date().getTime(),
-                        active_days: 30,
-                        paid: true,
-                    },
-                    { merge: true }
-                );
-                console.log("User data updated on Firebase successfully.");
-            }
+            if (
+				checkoutSession.metadata &&
+				checkoutSession.metadata.userId &&
+				(
+					checkoutSession.payment_status === 'no_payment_required' || 
+					checkoutSession.payment_status === 'paid'
+				)
+			) {
+				const userDocRef = doc(
+					db,
+					"users",
+					checkoutSession.metadata.userId
+				);
+				await setDoc(
+					userDocRef,
+					{
+						planName: "Pro",
+						last_paid: new Date().getTime(),
+						active_days: 30,
+						paid: true,
+					},
+					{ merge: true }
+				);
+				console.log("User data updated on Firebase successfully.");
+			}
 			break;
 		// case ""
 	}
