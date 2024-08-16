@@ -9,6 +9,10 @@ import toast, {Toaster} from 'react-hot-toast';
 import BookLoader from "@/components/BookLoader";
 import { useSubscription } from "@/hooks/useSubscription";
 import Head from "next/head";
+import APIInputModal from "@/components/APIInputModal";
+import { Input } from "@/components/ui/input";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface Flashcards{
     id: string;
@@ -24,10 +28,15 @@ const Dashboard = () => {
     const [flashcards, setFlashcards] = useState<Flashcards[]>([]);
     const [loading, setLoading] = useState(false);
     const { userData, loading: userLoading, error, addFlashcard } = useSubscription();
+    const [modalOpen, setModalOpen] = useState(false)
+    const [apiInput, setApiInput] = useState("")
 
     useEffect(() => {
         if (userData) {
             setFlashcards(userData.flashcards);
+            if(!userData.api_key){
+                setModalOpen(true)
+            }
         }
     }, [userData])
 
@@ -53,8 +62,7 @@ const Dashboard = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "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"
-                    // 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
+                    "Authorization": userData?.api_key || ""
                 },
                 body: JSON.stringify({ prompt: prompt })
             });
@@ -78,6 +86,20 @@ const Dashboard = () => {
             toast.error('Something went wrong!');
         } finally {
             setLoading(false);
+        }
+    }
+
+    const updateApiKey = async () => {
+        if(userData){
+            const userDocRef = doc(db, "users", userData.id);
+            await setDoc(
+                userDocRef,
+                {
+                    api_key: apiInput
+                },
+                { merge: true }
+            );
+            window.location.reload()
         }
     }
 
@@ -113,6 +135,22 @@ const Dashboard = () => {
                 position="top-center"
                 reverseOrder={false}
             />
+            <APIInputModal isOpen={modalOpen}>
+                <h2 className="text-2xl mb-4">API Key</h2>
+                <p className="">You need to input an OpenRouter API key</p>
+                <p className="mb-4 text-xs"><a href="https://openrouter.ai" target='_parent' className="underline">Click here</a> to generate an API Key</p>
+                <Input type="password" className="mb-4" onChange={(e) => {setApiInput(e.target.value)}} />
+                <button
+                    onClick={() => {
+                        updateApiKey()
+                        setModalOpen(false)
+                    }}
+                    disabled={!apiInput}
+                    className='disabled:opacity-60 bg-black text-white dark:bg-white dark:text-black text-sm rounded-md border border-black py-2 px-4'
+                >
+                    Save
+                </button>
+            </APIInputModal>
             <div className="flex-1 flex flex-col overflow-hidden">
                 <div className="flex-1 overflow-y-auto p-10 bg-muted">
                     {flashcards.length !== 0 ?

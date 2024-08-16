@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import { WalletIcon } from "@/assets/Icons"
+import { EyeIcon, EyeOffIcon, KeyIcon, PencilIcon, SaveIcon, WalletIcon } from "@/assets/Icons"
 import Link from "next/link"
 import {
     SignedIn,
@@ -12,6 +12,9 @@ import { cn } from "@/lib/utils"
 import React, { useEffect, useState } from "react"
 import getStripe from "@/lib/stripe"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+import { Input } from "./ui/input"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 
 const Header = () => {
     const { userData, loading: isLoading, error } = useSubscription()
@@ -50,7 +53,7 @@ const Header = () => {
         <header className="fixed top-0 left-0 right-0 px-4 lg:px-6 h-14 flex items-center border-b-2 bg-white z-50">
             <Link href="/" className="flex items-center justify-center" prefetch={false}>
                 <img src="/logo.jpg" alt="FlickCards Logo" className="h-12 w-12" />
-                <span className="sr-only">AI Flashcards</span>
+                <span className="sr-only">Effortless Flashcards Generator</span>
             </Link>
 
 
@@ -88,6 +91,9 @@ const Header = () => {
                         <UserButton>
                             <UserButton.UserProfilePage label="Subscription" labelIcon={<WalletIcon />} url="subscription">
                                 <SubscriptionManager isActive={isActive} userData={userData} isLoading={isLoading} error={error} endDate={endDate} />
+                            </UserButton.UserProfilePage>
+                            <UserButton.UserProfilePage label="API Key" labelIcon={<KeyIcon />} url="apikey">
+                                <ApiKeyManager userData={userData} />
                             </UserButton.UserProfilePage>
                         </UserButton>
                     </SignedIn>
@@ -185,6 +191,82 @@ const SubscriptionManager = ({
         </Card>
     )
 }
+
+const ApiKeyManager = ({ userData }: { userData: UserData }) => {
+    const [isKeyVisible, setIsKeyVisible] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [keyValue, setKeyValue] = useState(userData.api_key);
+
+    const handleToggleVisibility = () => {
+        setIsKeyVisible(!isKeyVisible);
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleSaveClick = async () => {
+        await updateApiKey()
+        window.location.reload()
+        setIsEditing(false);
+    };
+
+    const updateApiKey = async () => {
+        if (userData) {
+            const userDocRef = doc(db, "users", userData.id);
+            await setDoc(
+                userDocRef,
+                {
+                    api_key: keyValue
+                },
+                { merge: true }
+            );
+        }
+    }
+
+    return (
+        <Card className="mt-7">
+            <CardHeader>
+                <CardTitle className="w-full flex justify-between items-center">
+                    API Key
+                </CardTitle>
+                <CardDescription>
+                    OpenRouter API key
+                    <p className="mb-4 text-xs"><a href="https://openrouter.ai" target='_parent' className="underline">Click here</a> to generate an API Key</p>
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="mt-1 relative rounded-md flex gap-x-2">
+                    <Input
+                        type={isKeyVisible ? 'text' : 'password'}
+                        name="api-key"
+                        id="api-key"
+                        className="block pr-10 sm:text-sm rounded-md"
+                        value={keyValue}
+                        onChange={(e) => setKeyValue(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                    {/* <div className="absolute inset-y-0 right-0 pr-3 flex items-center"> */}
+                        <button
+                            type="button"
+                            className="text-gray-400 hover:text-gray-600"
+                            onClick={handleToggleVisibility}
+                        >
+                            {isKeyVisible ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                        <button
+                            type="button"
+                            className="text-gray-400 hover:text-gray-600 ml-2"
+                            onClick={isEditing ? handleSaveClick : handleEditClick}
+                        >
+                            {isEditing ? <SaveIcon /> : <PencilIcon />}
+                        </button>
+                    {/* </div> */}
+                    </div>
+            </CardContent>
+        </Card>
+    );
+};
 
 const StatusIndicator = ({ isActive, }: { isActive: boolean }) => {
     return (

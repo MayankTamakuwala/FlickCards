@@ -1,5 +1,5 @@
 // src/hooks/useSubscription.ts
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -22,10 +22,11 @@ export interface UserData {
 	flashcards: Flashcard[];
 	planName: string;
 	active_days: number;
+	api_key: string;
 }
 
 const MAX_RETRIES = 5;
-const RETRY_DELAY = 1000; // in milliseconds
+const RETRY_DELAY = 1000;
 
 export const useSubscription = () => {
 	const { userId } = useAuth();
@@ -34,7 +35,7 @@ export const useSubscription = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [retryCount, setRetryCount] = useState<number>(0);
 
-	const fetchUserData = useCallback(async () => {
+	const fetchUserData = async () => {
 		if (!userId) return;
 
 		try {
@@ -74,11 +75,11 @@ export const useSubscription = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [userId, retryCount]);
+	};
 
 	useEffect(() => {
 		fetchUserData();
-	}, [fetchUserData]);
+	}, [userId, retryCount]);
 
 	const addFlashcard = async (newFlashcard: Flashcard) => {
 		if (!userId) return;
@@ -88,19 +89,12 @@ export const useSubscription = () => {
 				doc(db, `users/${userId}/flashcards`, newFlashcard.id),
 				newFlashcard
 			);
-
-			setUserData((prevUserData) => {
-				if (!prevUserData) return null;
-				return {
-					...prevUserData,
-					flashcards: [newFlashcard, ...prevUserData.flashcards],
-				};
-			});
+			await fetchUserData();
 		} catch (e) {
 			console.error("Error adding flashcard:", e);
 			throw new Error("Failed to add flashcard");
 		}
 	};
 
-	return { userData, loading, error, addFlashcard };
+	return { userData, loading, error, addFlashcard, fetchUserData };
 };
