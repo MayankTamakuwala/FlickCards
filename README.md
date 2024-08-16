@@ -3,39 +3,54 @@
     <h1 align="center">FlickCards - Effortless Flashcards Generator</h1>
 </div>
 
-Welcome to the Pantry Management System! This app is designed to help you keep track of your pantry items, generate recipes, and manage your kitchen efficiently. Built with cutting-edge technologies like Next.js, Tailwind CSS, and Material UI, it leverages AI to offer advanced features.
+FlickCards is an AI-powered app designed to help students, professionals, and lifelong learners streamline their study process. With FlickCards, you can generate personalized flashcards instantly, ensuring an efficient and organized way to study for exams, learn new languages, or memorize key facts.
 
 ## Features
 
-- **Google Login**: Securely log in using your Google account.
-- **Add Items Easily**: Add items to your pantry using a simple form or by snapping a photo with your device camera.
-- **AI-Powered Item Recognition**: Photos are processed by the OpenAI Model GPT-4, which identifies the items in your pantry.
-- **AI-Generated Recipes**: Generate recipes with the help of the AI Llama Model 3. Recipes are suggested based on the items available in your pantry.
+- **AI-Generated Flashcards**: Simply input your study material, and FlickCards will generate tailored flashcards that suit your learning style.
+- **User-Friendly Dashboard**: Effortlessly save, organize, and manage your flashcards all in one place.
+- **Secure Authentication**: Powered by Clerk.js, ensuring your data and account are safe.
+- **Seamless Payments**: Integrated with Stripe for easy access to premium features.
 
 ## Tech Stack
 
-- **Next.js**: For a fast, server-rendered React application.
-- **Tailwind CSS**: For styling and a great UI/UX experience.
-- **Material UI**: For additional UI components and consistency.
+- **Next.js**: Provides a fast and dynamic web experience.
+- **TypeScript**: Ensures robust and maintainable code.
+- **Tailwind CSS**: Offers a clean, modern, and responsive UI.
+- **Clerk.js**: Manages secure authentication and user management.
+- **Stripe**: Handles smooth and secure payment processing.
 
-## Why You'll Love It
+## Why You’ll Love FlickCards
 
-- **Convenience**: Easily keep track of what's in your pantry.
+- **Personalized Learning**: Create flashcards tailored to your specific needs.
 - **AI Integration**: Take advantage of cutting-edge AI models to simplify pantry management and meal planning.
-- **Recipe Inspiration**: Never run out of meal ideas with AI-generated recipes based on what you already have.
+- **Efficiency**: Save time by letting AI handle the flashcard creation process.
+- **Organization**: Keep your study materials neatly organized in one place.
 
-## Installation
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+- [ngrok CLI](https://ngrok.com/docs/agent/cli/) 
+- [Stripe CLI](https://docs.stripe.com/stripe-cli)
+
+
+### Installation
 
 To get started with the Pantry Management System, follow these steps:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/MayankTamakuwala/Pantry-Management.git
+    git clone https://github.com/MayankTamakuwala/FlickCards.git
     ```
 
 2. **Navigate to the project directory**:
     ```bash
-    cd pantry-management-system
+    cd FlickCards
     ```
 
 3. **Install dependencies:**:
@@ -43,26 +58,30 @@ To get started with the Pantry Management System, follow these steps:
     npm install
     ```
 
-4. **Run the development server:**:
+4.	Set up environment variables:
+Create a .env file in the root directory and add the necessary environment variables for Clerk.js and Stripe.
+
+5. **Run the development server:**:
     ```bash
     npm run dev
     ```
 
-5.	Open `http://localhost:3000` with your browser to see the result.
+6.	Open `http://localhost:3000` with your browser to see the result.
 
-## Deployment
+## Demo and Live App
+- Demo Video: [Watch the demo](https://www.youtube.com/watch?v=oT5mHO-t4P0)
+- Live App: [Visit the app](https://flickcards.mayank-tamakuwala.me)
 
-The app is deployed on Vercel. You can visit it at https://pantrymanagement.vercel.app.
+## Feedback and Support
 
-## Demo
-
-Watch the demo on YouTube: [YouTube Link](https://youtu.be/B55EC1lU9SU)
+I’m excited to hear your thoughts and feedback on FlickCards! If you have any suggestions or encounter any issues, please feel free to [reach out](mailto:maytamaku.saidhwar@gmail.com). Your input is invaluable as I continue to refine and improve the app.
 
 ## Contact
-If you have any questions or need further assistance, feel free to reach out:
+I’m excited to hear your thoughts and feedback on FlickCards! If you have any suggestions or encounter any issues, please feel free to [reach out](mailto:maytamaku.saidhwar@gmail.com). Your input is invaluable as I continue to refine and improve the app.
+
 - **Name**: Mayank Tamakuwala
 - **Email**: maytamaku.saidhwar@gmail.com
 
-Thank you for checking out the Pantry Management System. I hope you find it as useful and fun to use as I do!
+Thank you for checking out the FlickCards. I hope you find it as useful and fun to use as I do!
 
 Cheers!
