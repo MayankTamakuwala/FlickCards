@@ -70,7 +70,7 @@ const FlashcardPage = () => {
                 <meta property="og:description" content="Generate flashcards on any topic using AI, save them to your dashboard, and enhance your learning experience." />
                 <meta name="author" content="Mayank Tamakuwala" />
             </Head>
-            <div className='flex justify-between w-full items-center mb-8'>
+            <div className='flex justify-between w-full items-center pt-14 mb-8 sticky top-0 bg-white z-40'>
                 <button onClick={() => {router.push("/dashboard")}} className='flex justify-center items-center gap-2'>
                     <Image
                         src={require("@/assets/back.png")}

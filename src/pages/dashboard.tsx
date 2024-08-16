@@ -54,6 +54,7 @@ const Dashboard = () => {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "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"
+                    // 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
                 },
                 body: JSON.stringify({ prompt: prompt })
             });
