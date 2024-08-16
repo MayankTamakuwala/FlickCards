@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 						product_data: {
 							name: "FlickCards Pro",
 						},
-						unit_amount: formatAmountForStripe(9),
+						unit_amount: formatAmountForStripe(0),
 						recurring: {
 							interval: "month",
 							interval_count: 1,
