@@ -118,8 +118,6 @@ const Dashboard = () => {
                     {flashcards.length !== 0 ?
                         (
                             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
-                        
-
                                 {flashcards.map((flashcard) => (
                                     <Link key={flashcard.id} href={`/flashcards/${flashcard.id}`}>
                                         <EvervaultCard
@@ -130,8 +128,6 @@ const Dashboard = () => {
                                         />
                                     </Link>
                                 ))}
-
-                            
                             </div>
                         ) : (
                             <div className="w-full h-full flex justify-center items-center text-center p-4">
@@ -141,7 +137,7 @@ const Dashboard = () => {
                             </div>
                         )}
                 </div>
-                <div className="p-4 border-t flex items-center w-full bg-slate-950">
+                <div className="p-4 border-t flex items-center w-full bg-gradient-to-tr from-cyan-950 to-slate-950">
                     <PlaceholdersAndVanishInput
                         placeholders={placeholders}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
