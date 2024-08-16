@@ -8,6 +8,7 @@ import withAuth from "@/lib/withAuth";
 import toast, {Toaster} from 'react-hot-toast';
 import BookLoader from "@/components/BookLoader";
 import { useSubscription } from "@/hooks/useSubscription";
+import Head from "next/head";
 
 interface Flashcards{
     id: string;
@@ -93,6 +94,20 @@ const Dashboard = () => {
 
     return (
         <div className="h-screen flex flex-col pt-14">
+            <Head>
+                <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="meta.jpeg" />
+                <meta name="twitter:image" content="meta.jpeg" />
+                <meta name="twitter:title" content="FlickCards - Effortless Flashcards Generator" />
+                <meta name="twitter:description" content="Create personalized flashcards instantly with AI. Save and organize your generated flashcards using an intuitive dashboard." />
+                <title>FlickCards | Dashboard</title>
+                <meta property="og:title" content="FlickCards - Effortless Flashcards Generator" />
+                <meta property="og:description" content="Generate flashcards on any topic using AI, save them to your dashboard, and enhance your learning experience." />
+                <meta name="author" content="Mayank Tamakuwala" />
+            </Head>
             <Toaster
                 position="top-center"
                 reverseOrder={false}
