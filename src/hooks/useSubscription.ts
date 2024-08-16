@@ -1,3 +1,4 @@
+// src/hooks/useSubscription.ts
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";

@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import { DotIcon } from "@/assets/Icons"
+import { WalletIcon } from "@/assets/Icons"
 import Link from "next/link"
 import {
     SignedIn,
@@ -11,6 +11,7 @@ import { UserData, useSubscription } from "@/hooks/useSubscription"
 import { cn } from "@/lib/utils"
 import React, { useEffect, useState } from "react"
 import getStripe from "@/lib/stripe"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
 
 const Header = () => {
     const { userData, loading: isLoading, error } = useSubscription()
@@ -72,10 +73,21 @@ const Header = () => {
                 ) : (
                     <SignedIn>
                         <StatusIndicator isActive={isActive} />
+                        {userData.planName === "Pro" && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <ProBadge />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>You are a Pro Member!</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
                         <UserButton>
-                            <UserButton.UserProfilePage label="Subscription" labelIcon={<DotIcon />} url="subscription">
+                            <UserButton.UserProfilePage label="Subscription" labelIcon={<WalletIcon />} url="subscription">
                                 <SubscriptionManager isActive={isActive} userData={userData} isLoading={isLoading} error={error} endDate={endDate} />
-                                {/* <SubscriptionForm/> */}
                             </UserButton.UserProfilePage>
                         </UserButton>
                     </SignedIn>
@@ -102,35 +114,12 @@ const SubscriptionManager = ({
     }
 }) => {
 
-    // const handleSubmit = async () => {
-    //     const checkoutSession = await fetch('/api/checkout_sessions', {
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //             userId: userData.id
-    //         })
-    //     })
-    //     const checkoutSessionJson = await checkoutSession.json()
-    //     if (checkoutSession.statusCode === 500) {
-    //         console.error(checkoutSession.message)
-    //         return
-    //     }
-
-
-    //     const stripe = await getStripe()
-    //     const { error } = await stripe?.redirectToCheckout({
-    //         sessionId: checkoutSessionJson.id,
-    //     })
-
-    //     if (error) {
-    //         console.warn(error.message)
-    //     }
-    // }
-
     const handleSubmit = async () => {
         const checkoutSession = await fetch('/api/checkout_sessions', {
             method: 'POST',
             body: JSON.stringify({
-                userId: userData.id
+                userId: userData.id,
+                email: userData.email
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -158,36 +147,42 @@ const SubscriptionManager = ({
     if (error) return <p>Error loading subscription data</p>
 
     return (
-            <Card className="mt-7">
-                <CardHeader>
-                    <CardTitle className="w-full flex justify-between items-center">
-                        Your Subscription
-                        <StatusIndicator isActive={isActive} />
-                    </CardTitle>
-                    <CardDescription>Manage your FlickCards subscription</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p>Current Plan: {userData?.planName}</p>
-                    <p>Ends at: {endDate.dateStr}</p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                    {userData?.planName === "Free Trial" ?
-                        (
-                            // <div className="flex flex-col w-full justify-center items-center border-t-2 pt-4">
-                            //     <h1 className="text-xl font-semibold">Upgrade to Pro Version</h1>
-                            //     <h3 className="text-lg font-medium">$9/month</h3>
-                            //     <h4 className="text-sm text-gray-600 mt-2 text-center">NOTE: I am not going to charge anything! This is just to showcase my Software Dev skills. You are gonna get charged $0.</h4>
-                            //     <CheckoutForm userData={userData}/>
-                            // </div>
-                            <Button onClick={handleSubmit}>Upgrade</Button>
-                        ) : (
-                            <Button variant='outline'>
-                                Cancel Pro
-                            </Button>
-                        )
-                    }
-                </CardFooter>
-            </Card>
+        <Card className="mt-7">
+            <CardHeader>
+                <CardTitle className="w-full flex justify-between items-center">
+                    Your Subscription
+                    <StatusIndicator isActive={isActive} />
+                </CardTitle>
+                <CardDescription>Manage your FlickCards subscription</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p>Current Plan: {userData?.planName}</p>
+                <p>Ends at: {endDate.dateStr}</p>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+                {userData?.planName === "Free Trial" ?
+                    (
+                        <div className="flex flex-col w-full justify-center items-center border-t-2 pt-4">
+                            <div className="flex justify-between items-center w-full">
+                                <div>
+                                    <h1 className="text-xl font-semibold">Upgrade to Pro Version</h1>
+                                    <h3 className="text-lg font-medium">$9/month</h3>
+                                </div>
+
+                                    <Button onClick={handleSubmit}>Upgrade</Button>
+
+                            </div>
+                            <h4 className="text-sm text-gray-600 mt-2 text-center"><span className="font-semibold">DISCLAIMER:</span> I won't be charging a single cent! This is purely to flaunt my software development wizardry. Your total bill: a whopping $0.00!</h4>
+                        </div>
+                        
+                    ) : (
+                        <Button variant='outline'>
+                            Cancel Pro
+                        </Button>
+                    )
+                }
+            </CardFooter>
+        </Card>
     )
 }
 
@@ -208,5 +203,14 @@ const StatusIndicator = ({ isActive, }: { isActive: boolean }) => {
         </div>
     )
 }
+
+const ProBadge: React.FC = () => {
+    return (
+        <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-slate-950">
+            <span className="text-white font-medium text-xs">PRO</span>
+        </div>
+    );
+};
+
 
 export default Header

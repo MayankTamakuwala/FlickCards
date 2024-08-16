@@ -8,11 +8,6 @@ import withAuth from "@/lib/withAuth";
 import toast, {Toaster} from 'react-hot-toast';
 import BookLoader from "@/components/BookLoader";
 import { useSubscription } from "@/hooks/useSubscription";
-import { useRouter } from "next/router";
-import Stripe from "stripe";
-import { useSearchParams } from "next/navigation";
-import { db } from "@/lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
 
 interface Flashcards{
     id: string;
@@ -28,65 +23,12 @@ const Dashboard = () => {
     const [flashcards, setFlashcards] = useState<Flashcards[]>([]);
     const [loading, setLoading] = useState(false);
     const { userData, loading: userLoading, error, addFlashcard } = useSubscription();
-    const [session, setSession] = useState<Stripe.Response<Stripe.Checkout.Session> | null>(null);
-    const router = useRouter();
-
-    useEffect(() => {
-        const fetchCheckoutSession = async () => {
-            const { session_id, userId } = router.query;
-
-            if (!session_id || !userId) {
-                console.log("Session ID or User ID is missing.");
-                return;
-            }
-
-            try {
-                console.log(`Making API call with session_id: ${session_id} and userId: ${userId}`);
-
-                const res = await fetch(`/api/checkout_sessions?session_id=${session_id}&userId=${userId}`);
-                const sessionData = await res.json();
-                if (res.ok) {
-                    setSession(sessionData);
-                    console.log("Session data received:", sessionData);
-                } else {
-                    console.error("Error in response:", sessionData.error);
-                }
-            } catch (err) {
-                console.error('An error occurred while retrieving the session: ', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (router.isReady) {
-            fetchCheckoutSession();
-        }
-    }, [router.isReady, router.query]);
 
     useEffect(() => {
         if (userData) {
             setFlashcards(userData.flashcards);
         }
-        // if (session && userData) {
-        //     const updateFirestore = async (userId: string) => {
-        //         const userDocRef = doc(db, "users", userId);
-        //         await setDoc(
-        //             userDocRef,
-        //             {
-        //                 planName: "Pro",
-        //                 last_paid: new Date().getTime(),
-        //                 active_days: 30,
-        //                 paid: true,
-        //             },
-        //             { merge: true }
-        //         );
-        //     };
-
-            // updateFirestore(userData.id)
-        // }
-    }, [userData
-        // , session
-    ])
+    }, [userData])
 
     const placeholders = [
         "Generate flashcards on basic Python programming (Easy).",
