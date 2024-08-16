@@ -14,8 +14,8 @@ export default async function handler(
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${req.headers["authorization"]}`,
-					// "HTTP-Referer": `https://pantrymanagement.vercel.app/`,
-					// "X-Title": `https://pantrymanagement.vercel.app/`,
+					"HTTP-Referer": `https://flickcards.mayank-tamakuwala.me/`,
+					"X-Title": `https://flickcards.mayank-tamakuwala.me/`,
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({

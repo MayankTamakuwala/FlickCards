@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import type { AppProps } from "next/app";
 import Header from '@/components/Header';
 import Head from 'next/head';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 export default function App({ Component, pageProps }: AppProps) {
 
@@ -31,6 +32,8 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Header />
                 <main className="flex-grow">
                     <Component {...pageProps} />
+                    <GoogleTagManager gtmId="GTM-TRC7P6PC" />
+                    <GoogleAnalytics gaId='G-VKVPTPV1VD'/>
                 </main>
             </div>
         </ClerkProvider>
