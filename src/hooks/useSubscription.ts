@@ -24,11 +24,15 @@ export interface UserData {
 	active_days: number;
 }
 
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 1000; // in milliseconds
+
 export const useSubscription = () => {
 	const { userId } = useAuth();
 	const [userData, setUserData] = useState<UserData | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
+	const [retryCount, setRetryCount] = useState<number>(0);
 
 	const fetchUserData = useCallback(async () => {
 		if (!userId) return;
@@ -55,8 +59,14 @@ export const useSubscription = () => {
 
 				setUserData({ ...user, flashcards });
 			} else {
-				console.log("No such document!");
-				setUserData(null);
+				if (retryCount < MAX_RETRIES) {
+					setRetryCount((prev) => prev + 1);
+					setTimeout(fetchUserData, RETRY_DELAY);
+				} else {
+					console.log("No such document!");
+					setUserData(null);
+					setError("User data not found");
+				}
 			}
 		} catch (e) {
 			console.error("Error fetching user data:", e);
@@ -64,7 +74,7 @@ export const useSubscription = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [userId]);
+	}, [userId, retryCount]);
 
 	useEffect(() => {
 		fetchUserData();
