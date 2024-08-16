@@ -10,8 +10,6 @@ import { Button } from "./ui/button"
 import { UserData, useSubscription } from "@/hooks/useSubscription"
 import { cn } from "@/lib/utils"
 import React, { useEffect, useState } from "react"
-import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from './CheckoutForm';
 import getStripe from "@/lib/stripe"
 
 const Header = () => {
