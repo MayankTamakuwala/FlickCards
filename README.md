@@ -1,6 +1,6 @@
 <div align="center">
-    <img src = "https://github.com/MayankTamakuwala/Pantry-Management/blob/main/public/logo.png" width="300">
-    <h1 align="center">Pantry Management System</h1>
+    <img src = "https://github.com/MayankTamakuwala/FlickCards/blob/main/public/logo.jpg" width="300">
+    <h1 align="center">FlickCards - Effortless Flashcards Generator</h1>
 </div>
 
 Welcome to the Pantry Management System! This app is designed to help you keep track of your pantry items, generate recipes, and manage your kitchen efficiently. Built with cutting-edge technologies like Next.js, Tailwind CSS, and Material UI, it leverages AI to offer advanced features.
